@@ -1,5 +1,5 @@
 import { addEggtray, cacheEggTray, FarmLabel } from "@/features/egg-counting-apparatus/egg-counting-apparatus-slice";
-import {  eggTrayRef, dataCollectionRef } from "@/store/firebase";
+// import {  eggTrayRef, dataCollectionRef } from "@/store/firebase";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { software_defined_web_url } from "@/lib/config";
 import { generateUniqueID } from "@/utils/hash";

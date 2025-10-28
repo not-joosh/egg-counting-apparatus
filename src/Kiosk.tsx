@@ -30,10 +30,11 @@ function App() {
 
     } else {
       const checkNetworkStatus = async () => {
-        const res = await fetch(`${flask_app}check-internet`)
-        const data = await res.json()
+        // const res = await fetch(`${flask_app}check-internet`)
+        // const data = await res.json()
         // dispatch(setNetworkStatus(false))
-        dispatch(setNetworkStatus(data.content.success))
+        // dispatch(setNetworkStatus(data.content.success))
+        dispatch(setNetworkStatus(true))
       }
   
       checkNetworkStatus()

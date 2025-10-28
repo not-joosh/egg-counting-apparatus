@@ -1,17 +1,17 @@
 import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "@/app/hooks";
 import { useToast } from "@/components/ui/use-toast";
-import { useCache } from "./useCache";
-import { useApparatus } from "./useApparatus";
+// import { useCache } from "./useCache";
+// import { useApparatus } from "./useApparatus";
 import { resetRoutingSlice, setIsAuthenticated } from "@/features/routing-controller/routing-slice";
-import { cachePinChange, clearEggtray, FarmLabel, resetEggCountingApparatus, setForceUpdate, setLabels, setPinCode, setTimeOfLogin } from "@/features/egg-counting-apparatus/egg-counting-apparatus-slice";
-import { arrayRemove, deleteDoc, doc, getDocs, onSnapshot, query, updateDoc, where } from "firebase/firestore";
-import { eggCountingApparatusRef } from "@/store/firebase";
-import { labelRef } from "@/store/firebase";
+import { cachePinChange, clearEggtray, resetEggCountingApparatus, setForceUpdate, setTimeOfLogin } from "@/features/egg-counting-apparatus/egg-counting-apparatus-slice";
+// import { arrayRemove, deleteDoc, doc, getDocs, onSnapshot, query, updateDoc, where } from "firebase/firestore";
+// import { eggCountingApparatusRef } from "@/store/firebase";
+// import { labelRef } from "@/store/firebase";
 import { resetKeyboardSlice } from "@/features/keyboard/keyboard-slice";
 import { resetCameraSlice } from "@/features/camera/camera-slice";
 import { resetSettingsSlice } from "@/features/settings/settings-slice";
-import { organizationsRef } from "@/store/firebase";
+// import { organizationsRef } from "@/store/firebase";
 
 export const useMonitor = () => {
     const dispatch = useAppDispatch();
@@ -26,13 +26,14 @@ export const useMonitor = () => {
     const language = useAppSelector((state) => state.settings?.language);
     const isForceUpdate = useAppSelector((state) => state.eggCountingApparatus?.forceUpdate);
     const { toast } = useToast();
-    const { processCache } = useCache();
-    const { updateApparatusPIN } = useApparatus();
+    // const { processCache } = useCache();
+    // const { updateApparatusPIN } = useApparatus();
 
     const unloadCache = async () => {
         try {
-            console.log("uploadCache has gotten triggered");
-            const res = await processCache();
+            console.log("uploadCache has gotten triggered (DEMO MODE - No Firebase)");
+            // DEMO: Simulated cache processing
+            const res = { success: true, message: "Cache processed successfully (demo)" };
             if (!res.success) throw new Error(`${res.message}`);
         } catch (error: unknown) {
             if (error instanceof Error) {
@@ -55,14 +56,14 @@ export const useMonitor = () => {
 
     const handlePinUpdate = async () => {
         try {
-            // console.log("uploadCache has gotten triggered");
             if (pin == null) throw new Error("Pin is null");
-            const res = await updateApparatusPIN(pin);
+            // DEMO: Simulated PIN update
+            const res = { success: true, message: "PIN updated successfully (demo)" };
             if (!res.success) throw new Error(`${res.message}`);
             dispatch(cachePinChange(false));
             toast({
                 title: "Success",
-                description: language === "english" ? "PIN updated successfully" : "Successful ang pag update sa PIN",
+                description: language === "english" ? "PIN updated successfully (demo mode)" : "Successful ang pag update sa PIN (demo mode)",
                 duration: 3000,
                 className: "bg-green-400 text-white",
             });
@@ -87,26 +88,19 @@ export const useMonitor = () => {
 
     const handleCleanup = () => {
         try {
-            // We know that the string of the last login is not empty, and its formatted like this:
-            // "2022-02-22T22:22:22.222Z"
-            // So we can check if today's date is at least 12 hours from the last login
             if(!lastLogin) throw new Error(language === "english" ? "Last login date is not available" : "Dili available ang daan nga login date.");
             const currentDate = new Date();
             const lastLoginDate = new Date(lastLogin);
             const diff = currentDate.getTime() - lastLoginDate.getTime();
             if (diff > 43200000) { 
-            // if (diff > 30000) { 
                 // 43200000 milliseconds is 12 hours
-                // for 30 seconds, use 30000
-                // We can clear the egg tray history
                 dispatch(setIsAuthenticated(false));
                 dispatch(cachePinChange(false));
-                // dispatch(setIsIdle(true));
                 dispatch(setTimeOfLogin(""));
                 dispatch(clearEggtray());
                 toast({
                     title: "Success",
-                    description: language === "english" ? "Cache and egg tray history cleared successfully" : "Successful ang pag clear sa cache ug egg tray history",
+                    description: language === "english" ? "Cache and egg tray history cleared successfully (demo mode)" : "Successful ang pag clear sa cache ug egg tray history (demo mode)",
                     duration: 3000,
                     className: "bg-green-400 text-white",
                 });
@@ -130,54 +124,6 @@ export const useMonitor = () => {
         }
     };
 
-    // const handleReset = async () => {
-    //     try {
-    //         // This function will reset all states to their initial values
-
-    //         // Sync apparatus
-    //         dispatch(resetCameraSlice());
-    //         dispatch(resetEggCountingApparatus());
-    //         dispatch(resetKeyboardSlice());
-    //         dispatch(resetSettingsSlice());
-    //         dispatch(resetRoutingSlice());
-
-    //         toast({
-    //             title: "Success",
-    //             description: language === "english" ? "Apparatus has been reset" : "Nareset ang apparatus",
-    //             duration: 3000,
-    //             className: "bg-green-400 text-white",
-    //         });
-
-    //         // before we delete the apparatus document from the apparatus collection, we first
-    //         // need to delete the "id" by searching through the org collection where the orgID matches the org id here.
-    //         // after identifying the document sharing the same orgID, we will have to look at the attribute: "eggCounterApparatusId" and find the eggCOunting APparatus's id
-    //         // and delete it from the array.
-    //         // organizationsRef <=== imported as the collection of organizations from firebase
-
-    //         // now we can delete the document frmo the apparatus ref
-    //         const docRef = doc(eggCountingApparatusRef, apparatusID);
-    //         await deleteDoc(docRef); // Delete the document instead of updating it
-            
-            
-    //         localStorage.clear(); // resetting local storage. 
-    //     } catch (error: unknown) {
-    //         if (error instanceof Error) {
-    //             toast({
-    //                 title: "Error",
-    //                 description: error.message,
-    //                 duration: 3000,
-    //                 className: "bg-red-400 text-white",
-    //             });
-    //         } else {
-    //             toast({
-    //                 title: "Error",
-    //                 description: `${error}`,
-    //                 duration: 3000,
-    //                 className: "bg-red-400 text-white",
-    //             });
-    //         }
-    //     }
-    // };
     const handleReset = async () => {
         try {
             // Reset application states
@@ -189,39 +135,15 @@ export const useMonitor = () => {
     
             toast({
                 title: "Success",
-                description: language === "english" ? "Apparatus has been reset" : "Nareset ang apparatus",
+                description: language === "english" ? "Apparatus has been reset (demo mode)" : "Nareset ang apparatus (demo mode)",
                 duration: 3000,
                 className: "bg-green-400 text-white",
             });
     
-            // Search for the organization document matching the orgID
-            const orgQuery = query(organizationsRef, where("organizationID", "==", orgID));
-            const orgSnapshot = await getDocs(orgQuery);
-    
-            if (!orgSnapshot.empty) {
-                orgSnapshot.forEach(async (orgDoc) => {
-                    const orgData = orgDoc.data();
-    
-                    // Check if "eggCounterApparatusId" array contains the apparatusID
-                    if (orgData.eggCounterApparatusId?.includes(apparatusID)) {
-                        const orgDocRef = doc(organizationsRef, orgDoc.id);
-    
-                        // Remove the apparatusID from the array
-                        await updateDoc(orgDocRef, {
-                            eggCounterApparatusId: arrayRemove(apparatusID),
-                        });
-    
-                        console.log(`Removed apparatusID from organization: ${orgDoc.id}`);
-                    }
-                });
-            } else {
-                console.warn("No matching organization found.");
-            }
-    
-            // Delete the document from apparatus collection
-            const docRef = doc(eggCountingApparatusRef, apparatusID);
-            await deleteDoc(docRef);
-    
+            // DEMO: Simulated Firebase operations
+            console.log("DEMO MODE: Would remove apparatus from organization:", { orgID, apparatusID });
+            console.log("DEMO MODE: Would delete apparatus document");
+            
             // Clear local storage
             localStorage.clear();
     
@@ -254,16 +176,10 @@ export const useMonitor = () => {
         if (pinChanged && pinChanged === true && networkStatus) {
             handlePinUpdate();
         };
-        // If the cache is empty and the pin has not changed, then we can 
-        // attempt to dump the cache and also egg tray history to clean the redux state.
-        // This is necessary to prevent memory leaks. we'll make a check to see if the timestamp
-        // console.log("pinChanged: ", pinChanged);
-        // console.log("cacheCount: ", cacheCount);
-        // console.log("lastLogin: ", lastLogin);
-        // console.log("networkStatus: ", networkStatus);
+
         // @ts-ignore
         if (lastLogin && cacheCount != null && cacheCount <= 0 && pinChanged === false && networkStatus) {
-            console.log("Calling handleCleanup with valid states");
+            console.log("Calling handleCleanup with valid states (DEMO MODE)");
             handleCleanup();
         } else {
             console.log("Conditions not met for handleCleanup:", {
@@ -283,6 +199,15 @@ export const useMonitor = () => {
         const copyOfApparatusID = apparatusID;
         if (!copyOfApparatusID) return;
 
+        // DEMO: Firebase snapshot listener disabled
+        console.log("DEMO MODE: Firebase snapshot listener would be active for apparatus:", copyOfApparatusID);
+        
+        // Simulated cleanup function
+        return () => {
+            console.log("DEMO MODE: Unsubscribed from Firebase listener");
+        };
+
+        /* ORIGINAL FIREBASE CODE - COMMENTED OUT FOR DEMO
         const unsubscribe = onSnapshot(
             query(eggCountingApparatusRef, where("__name__", "==", copyOfApparatusID)),
             (snapshot) => {
@@ -290,28 +215,19 @@ export const useMonitor = () => {
                     const data = doc.data();
                     
                     if (data.hasNewLabels) {
-                        // Fetch labels from the labelRef collection where organizationID matches copyOfOrgID
-                        // Cache the labels in redux
-                        // Set hasNewLabels to false in the document
                         console.log("Document needs update:", data);
-                        // Assuming you have a function to fetch labels and update the document
                         fetchAndCacheLabels(copyOfOrgID);
                     } 
                     if (data.hasNewPin) {
-                        // Update the pin in redux and force relogin
-                        // Set hasNewPin to false in the document
                         console.log("Pin has been updated:", data);
                         dispatch(setPinCode(data.pin));
                         updateDocumentPinStatus(copyOfApparatusID);
-                        // forcing them to reauthenticate
                         dispatch(setIsAuthenticated(false));
                     }
-                    // Resettting the apparatus since the linking is updated
                     if(data.hasLinkUpdate) {
                         handleReset();
                         console.log("Link has been updated:", data);
                     } 
-                    // if there is a force update, then we can update the pin and labels
                     if(isForceUpdate) {
                         fetchAndCacheLabels(copyOfOrgID);
                         console.log("Pin has been updated:", data);
@@ -327,8 +243,10 @@ export const useMonitor = () => {
         );
 
         return () => unsubscribe();
+        */
     }, [apparatusID, isForceUpdate]);
 
+    /* FIREBASE HELPER FUNCTIONS - COMMENTED OUT FOR DEMO
     const fetchAndCacheLabels = async (orgID: string) => {
         try {
             const labelsSnapshot = await getDocs(query(labelRef, where("organizationID", "==", orgID)));
@@ -356,5 +274,5 @@ export const useMonitor = () => {
             console.error("Error updating document pin status:", error);
         };
     };
-
+    */
 };
