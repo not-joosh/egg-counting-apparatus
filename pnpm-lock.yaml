@@ -55,7 +55,7 @@ importers:
         version: 2.0.6
       axios:
         specifier: ^1.7.7
-        version: 1.13.0
+        version: 1.13.1
       card:
         specifier: ^2.5.4
         version: 2.5.4
@@ -65,6 +65,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      crpyto-js:
+        specifier: ^0.0.1-security
+        version: 0.0.1-security
       firebase:
         specifier: ^10.13.1
         version: 10.14.1
@@ -1636,8 +1639,8 @@ packages:
     peerDependencies:
       postcss: ^8.1.0
 
-  axios@1.13.0:
-    resolution: {integrity: sha512-zt40Pz4zcRXra9CVV31KeyofwiNvAbJ5B6YPz9pMJ+yOSLikvPT4Yi5LjfgjRa9CawVYBaD1JQzIVcIvBejKeA==}
+  axios@1.13.1:
+    resolution: {integrity: sha512-hU4EGxxt+j7TQijx1oYdAjw4xuIp1wRQSsbMFwSthCWeBQur1eF+qJ5iQ5sN3Tw8YRzQNKb8jszgBdMDVqwJcw==}
 
   babel-runtime@6.26.0:
     resolution: {integrity: sha512-ITKNuq2wKlW1fJg9sSW52eepoYgZBggvOAHC0u/CYu/qxQ9EVzThCgR69BnSXLHjy2f7SY5zaQ4yt7H9ZVxY2g==}
@@ -1763,6 +1766,9 @@ packages:
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
+
+  crpyto-js@0.0.1-security:
+    resolution: {integrity: sha512-7+HILkcscyLGkDIWBCyFCYfW/S2bJiYOmaLIf4x5Cme5nndbg9JViI7NkFGPx3YAXqkkpTNdXYneguQoHoU6HA==}
 
   crypto-js@4.2.0:
     resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
@@ -4580,7 +4586,7 @@ snapshots:
       postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  axios@1.13.0:
+  axios@1.13.1:
     dependencies:
       follow-redirects: 1.15.11
       form-data: 4.0.4
@@ -4717,6 +4723,8 @@ snapshots:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+
+  crpyto-js@0.0.1-security: {}
 
   crypto-js@4.2.0: {}
 
