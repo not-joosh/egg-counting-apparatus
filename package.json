@@ -29,7 +29,7 @@
     "card": "^2.5.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "crpyto-js": "^0.0.1-security",
+    "crypto-js": "^4.2.0",
     "firebase": "^10.13.1",
     "framer-motion": "^11.3.30",
     "html2canvas": "^1.4.1",
